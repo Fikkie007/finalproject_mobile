@@ -89,15 +89,23 @@ class _TransactionAddState extends State<TransactionAdd> {
                 },
                 onChanged: (text) => setState(() => errorMessage = ''),
               ),
-              Row(
+              Spacer(),
+              Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50)),
                       child: Text('Save'),
                       onPressed: () => saveTransaction(context),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          minimumSize: const Size.fromHeight(50)),
                       child: Text('Cancel'),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -111,11 +119,11 @@ class _TransactionAddState extends State<TransactionAdd> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 5)
-    );
+        lastDate: DateTime(DateTime.now().year + 5));
     if (picked != null)
       setState(() {
-        transactionDateController.text = DateFormat('MM/dd/yyyy').format(picked);
+        transactionDateController.text =
+            DateFormat('MM/dd/yyyy').format(picked);
       });
   }
 
@@ -167,9 +175,7 @@ class _TransactionAddState extends State<TransactionAdd> {
         transactionAmountController.text,
         transactionCategoryController.text,
         transactionDescriptionController.text,
-        transactionDateController.text
-    );
+        transactionDateController.text);
     Navigator.pop(context);
   }
-
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_first_app/providers/AuthProvider.dart';
 import 'package:my_first_app/providers/CategoryProvider.dart';
 import 'package:my_first_app/providers/TransactionProvider.dart';
+import 'package:my_first_app/screens/about.dart';
 import 'package:my_first_app/screens/categories.dart';
 import 'package:my_first_app/screens/home.dart';
 import 'package:my_first_app/screens/login.dart';
@@ -23,20 +24,26 @@ class MyApp extends StatelessWidget {
                 ChangeNotifierProvider<TransactionProvider>(
                     create: (context) => TransactionProvider(authProvider))
               ],
-              child: MaterialApp(title: 'Welcome to Flutter', routes: {
-                '/': (context) {
-                  final authProvider = Provider.of<AuthProvider>(context);
-                  if (authProvider.isAuthenticated) {
-                    return Home();
-                  } else {
-                    return Login();
-                  }
-                },
-                '/login': (context) => Login(),
-                '/register': (context) => Register(),
-                '/home': (context) => Home(),
-                '/categories': (context) => Categories(),
-              }));
+              child: MaterialApp(
+                  title: 'Welcome to Flutter',
+                  debugShowCheckedModeBanner: true,
+                  debugShowMaterialGrid: false,
+                  routes: {
+                    '/': (context) {
+                      final authProvider = Provider.of<AuthProvider>(context);
+
+                      if (authProvider.isAuthenticated) {
+                        return Home();
+                      } else {
+                        return About();
+                      }
+                    },
+                    '/about': (context) => About(),
+                    '/login': (context) => Login(),
+                    '/register': (context) => Register(),
+                    '/home': (context) => Home(),
+                    '/categories': (context) => Categories(),
+                  }));
         }));
   }
 }

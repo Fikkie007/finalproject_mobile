@@ -84,7 +84,8 @@ class _LoginState extends State<Login> {
                             style: ElevatedButton.styleFrom(
                                 minimumSize: Size(double.infinity, 36)),
                           ),
-                          Text(errorMessage, style: TextStyle(color: Colors.red)),
+                          Text(errorMessage,
+                              style: TextStyle(color: Colors.red)),
                           Padding(
                             padding: EdgeInsets.only(top: 20),
                             child: InkWell(
@@ -113,13 +114,12 @@ class _LoginState extends State<Login> {
       return;
     }
 
-    final AuthProvider provider = Provider.of<AuthProvider>(context, listen: false);
+    final AuthProvider provider =
+        Provider.of<AuthProvider>(context, listen: false);
     try {
-      await provider.login(
-          emailController.text,
-          passwordController.text,
-          deviceName
-      );
+      await provider
+          .login(emailController.text, passwordController.text, deviceName)
+          .then((value) => Navigator.pushNamed(context, "/"));
     } catch (Exception) {
       setState(() {
         errorMessage = Exception.toString().replaceAll('Exception: ', '');

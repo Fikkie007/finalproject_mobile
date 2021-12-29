@@ -9,8 +9,12 @@ import 'package:my_first_app/providers/CategoryProvider.dart';
 class TransactionEdit extends StatefulWidget {
   final Transaction transaction;
   final Function transactionCallback;
+  final BuildContext _modalContext;
 
-  TransactionEdit(this.transaction, this.transactionCallback, {Key? key}) : super(key: key);
+  TransactionEdit(
+      this.transaction, this.transactionCallback, this._modalContext,
+      {Key? key})
+      : super(key: key);
 
   @override
   _TransactionEditState createState() => _TransactionEditState();
@@ -27,9 +31,12 @@ class _TransactionEditState extends State<TransactionEdit> {
   @override
   void initState() {
     transactionAmountController.text = widget.transaction.amount.toString();
-    transactionCategoryController.text = widget.transaction.categoryId.toString();
-    transactionDescriptionController.text = widget.transaction.description.toString();
-    transactionDateController.text = widget.transaction.transactionDate.toString();
+    transactionCategoryController.text =
+        widget.transaction.categoryId.toString();
+    transactionDescriptionController.text =
+        widget.transaction.description.toString();
+    transactionDateController.text =
+        widget.transaction.transactionDate.toString();
     super.initState();
   }
 
@@ -66,7 +73,13 @@ class _TransactionEditState extends State<TransactionEdit> {
                 },
                 onChanged: (text) => setState(() => errorMessage = ''),
               ),
+              SizedBox(
+                height: 15,
+              ),
               buildCategoriesDropdown(),
+              SizedBox(
+                height: 15,
+              ),
               TextFormField(
                 controller: transactionDescriptionController,
                 decoration: InputDecoration(
@@ -81,6 +94,9 @@ class _TransactionEditState extends State<TransactionEdit> {
                   return null;
                 },
                 onChanged: (text) => setState(() => errorMessage = ''),
+              ),
+              SizedBox(
+                height: 15,
               ),
               TextFormField(
                 controller: transactionDateController,
@@ -100,15 +116,23 @@ class _TransactionEditState extends State<TransactionEdit> {
                 },
                 onChanged: (text) => setState(() => errorMessage = ''),
               ),
-              Row(
+              Spacer(),
+              Column(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          minimumSize: const Size.fromHeight(50)),
                       child: Text('Save'),
                       onPressed: () => saveTransaction(context),
                     ),
+                    SizedBox(
+                      height: 10,
+                    ),
                     ElevatedButton(
-                      style: ElevatedButton.styleFrom(primary: Colors.red),
+                      style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          minimumSize: const Size.fromHeight(50)),
                       child: Text('Cancel'),
                       onPressed: () => Navigator.pop(context),
                     ),
@@ -122,11 +146,11 @@ class _TransactionEditState extends State<TransactionEdit> {
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(DateTime.now().year - 5),
-        lastDate: DateTime(DateTime.now().year + 5)
-    );
+        lastDate: DateTime(DateTime.now().year + 5));
     if (picked != null)
       setState(() {
-        transactionDateController.text = DateFormat('MM/dd/yyyy').format(picked);
+        transactionDateController.text =
+            DateFormat('MM/dd/yyyy').format(picked);
       });
   }
 
@@ -140,8 +164,8 @@ class _TransactionEditState extends State<TransactionEdit> {
           items: categories.map<DropdownMenuItem<String>>((e) {
             return DropdownMenuItem<String>(
                 value: e.id.toString(),
-                child: Text(e.name,
-                    style: TextStyle(color: Colors.black, fontSize: 20.0)));
+                child:
+                    Text(e.name, style: Theme.of(context).textTheme.subtitle1));
           }).toList(),
           value: transactionCategoryController.text,
           onChanged: (String? newValue) {
@@ -153,6 +177,7 @@ class _TransactionEditState extends State<TransactionEdit> {
               transactionCategoryController.text = newValue.toString();
             });
           },
+          style: TextStyle(fontSize: 12.0),
           decoration: InputDecoration(
             border: OutlineInputBorder(),
             labelText: 'Category',
@@ -176,11 +201,13 @@ class _TransactionEditState extends State<TransactionEdit> {
     }
 
     widget.transaction.amount = transactionAmountController.text;
-    widget.transaction.categoryId = int.parse(transactionCategoryController.text);
+    widget.transaction.categoryId =
+        int.parse(transactionCategoryController.text);
     widget.transaction.description = transactionDescriptionController.text;
     widget.transaction.transactionDate = transactionDateController.text;
 
     await widget.transactionCallback(widget.transaction);
     Navigator.pop(context);
+    Navigator.pop(widget._modalContext);
   }
 }

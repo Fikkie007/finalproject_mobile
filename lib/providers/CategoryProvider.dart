@@ -50,7 +50,8 @@ class CategoryProvider extends ChangeNotifier {
       categories.remove(category);
       notifyListeners();
     } catch (Exception) {
-      await authProvider.logOut();
+      print(Exception);
+      // await authProvider.logOut();
     }
   }
 }

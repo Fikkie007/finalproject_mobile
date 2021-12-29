@@ -90,10 +90,13 @@ class ApiService {
 
     List transactions = jsonDecode(response.body);
 
-    return transactions.map((transaction) => Transaction.fromJson(transaction)).toList();
+    return transactions
+        .map((transaction) => Transaction.fromJson(transaction))
+        .toList();
   }
 
-  Future<Transaction> addTransaction(String amount, String category, String description, String date) async {
+  Future<Transaction> addTransaction(
+      String amount, String category, String description, String date) async {
     String uri = baseUrl + 'transactions';
 
     http.Response response = await http.post(Uri.parse(uri),
@@ -195,11 +198,8 @@ class ApiService {
           HttpHeaders.contentTypeHeader: 'application/json',
           HttpHeaders.acceptHeader: 'application/json',
         },
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-          'device_name': deviceName
-        }));
+        body: jsonEncode(
+            {'email': email, 'password': password, 'device_name': deviceName}));
 
     if (response.statusCode == 422) {
       Map<String, dynamic> body = jsonDecode(response.body);
